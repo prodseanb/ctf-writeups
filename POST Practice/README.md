@@ -30,4 +30,8 @@ This gives us the flag:
 ```bash
 b'<h1>flag{p0st_d4t4_4ll_d4y}</h1>'
 ```
+Alternative method - Open up a terminal and make a POST request using curl and specify the credentials using `-d`.
+```bash
+curl -X POST http://165.227.106.113/post.php -d "username=admin&password=71urlkufpsdnlkadsf"
+```
 ![POST_flag](https://user-images.githubusercontent.com/59718043/123499426-98668180-d604-11eb-89d4-ec7952413e51.png)
