@@ -16,7 +16,7 @@ Append a '0' to the URL instead of '1', watch the number of packets go up.
 <br/><br/>
 http://10.10.10.245/data/1 > http://10.10.10.245/data/0
 <br/><br/>
-Download the .pcap file. Open the file, somewhere in it should contain some credentials.
+Download the .pcap file. Open the file, somewhere in it you should find some credentials.
 ```
 s�^@^@USER nathan
 Vw�`�J^A^@8^@^@^@8^@^@^@^@^D^@^A^@^F^@^L)� �^@^@^H^@E^@^@(su@^@@^F�����^P���^A^@^Uԋ^["\�`�x_P^P^A�      ~^@^@Vw�`$>
