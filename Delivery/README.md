@@ -43,6 +43,18 @@ Ran a gobuster scan on the ticketing system page to find the server-side portal:
 Found the ticketing system server-side portal on `http://helpdesk.delivery.htb/scp/login.php`. Used `maildeliverer:Youve_G0t_Mail!` to log in.
 <br/><br/>
 ![Screenshot_2021-10-21_00_30_23](https://user-images.githubusercontent.com/59718043/138211896-120c7a88-2a3c-4ff1-95ca-191579ccf69e.png)
+<br/><br/>
+Also found out that the same credentials can be used to SSH into the server.
 ```
-TO BE CONTINUED...
+Linux Delivery 4.19.0-13-amd64 #1 SMP Debian 4.19.160-2 (2020-11-28) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Tue Jan  5 06:09:50 2021 from 10.10.14.5
+maildeliverer@Delivery:~$ ls
+user.txt
 ```
