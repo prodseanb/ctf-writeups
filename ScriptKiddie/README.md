@@ -18,6 +18,8 @@ Found a site with input fields that could be potential entry points.
 ![Screenshot at 2021-12-03 21-38-40](https://user-images.githubusercontent.com/59718043/144700412-347e85cf-7ea9-498c-807e-81c702acb9a0.png)
 <br/><br/>
 Another potential vulnerability: `Werkzeug/0.16.1 Python/3.8.5`.
-```
-TO BE CONTINUED
-```
+
+<br/><br/>
+Knowing that the site executes binaries from a Linux server, first I tried command injection on the input fields, but unfortunately that didn't work.<br/><br/>
+![Screenshot at 2021-12-04 20-32-13](https://user-images.githubusercontent.com/59718043/144734995-99ddb895-5b05-4349-83a1-cea76b3c060d.png)
+
