@@ -1,7 +1,7 @@
 # ctf-writeups
-various CTF attempts, reports and documentation.
+various CTF attempts/writeups, documenting my learning process as I explore a variety of challenges.
 
-## Sites:
+## Sites played:
 - [HackTheBox](https://www.hackthebox.eu/)
 - [CTFLearn](https://ctflearn.com/)
 - [TryHackMe](https://tryhackme.com/)
