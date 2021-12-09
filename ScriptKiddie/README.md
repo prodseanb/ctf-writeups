@@ -47,9 +47,9 @@ id
 uid=1000(kid) gid=1000(kid) groups=1000(kid)
 ```
 <br/><br/>
-The user.txt flag can be found under the usual user home directory (/home/<user>/).
+The user.txt flag can be found under the usual user home directory (/home/kid/).
  
-There is another user `pwn`, the plan was to find a way to this account. I used a [secjuice]() resource for this part as I hit a roadblock. 
+There is another user `pwn`, the plan was to find a way to this account. I used a [secjuice]() writeup for this part as I hit a roadblock. 
  ```
  $ nc -nvlp 4445
  ```
