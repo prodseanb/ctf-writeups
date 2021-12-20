@@ -82,7 +82,7 @@ msf6 > cat /root/root.txt
 stty: 'standard input': Inappropriate ioctl for device
 [*] exec: cat /root/root.txt
 
-3dff2015ccc0f80fc0be44b5605b068d
+<root flag here>
 stty: 'standard input': Inappropriate ioctl for device
 stty: 'standard input': Inappropriate ioctl for device
 stty: 'standard input': Inappropriate ioctl for device
